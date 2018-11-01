@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1> TO DO LIST </h1>
+    <form name ="form1">
+    <INPUT type ="text" id='txttache' placeholder="Entrer La tache"><br>
+        <input type="button" id ="btnadd" value="Ajouter">
+        <input type='button' id="btndelete" value ="Supprimer Tous ">
+        <ul id='mestaches'>
+      <li class='tache' >item1</li>
+      
+
+
+        </ul>
+    </form>
+    <script>
+        // definition des variable 
+  var frm , mestaches , btndelete , txttache ; 
+  frm = document.querySelector('form');
+  mestaches = document.querySelector("#mestaches");
+  btndelete = document.querySelector('#btndelete');
+  txttache = document.querySelector("#txttache");
+  btnadd = document.querySelector("#btnadd");
+  // declarer un variable array 
+//var todoarray = []; 
+// on vas faire une condition sur le tableau todo si il est vide ou non  une condition ternaire pour que apres le reloading du page les todo reste 
+ var todoarray = localStorage.getItem('todo') ? JSON.parse(localStorage.getItem('todo')) : [] ;
+
+
+// declarer que ce array vas étre assembler tous les items a conserver 
+localStorage.setItem('todo',JSON.stringify(todoarray));
+
+// declarer une variable  qui vas contenir les item  stored 
+// parse est une méthode qui converte un string en un obj javascript qui peux étre utilisé par le navigateur 
+var stored = JSON.parse(localStorage.getItem('todo'));
+ 
+
+
+
+// ajouter le focus sur l'input text 
+   txttache.focus();
+
+ // Addeventlistener pour la forme 
+   frm.addEventListener('submit',function(e)
+   {e.preventDefault(); 
+    todomarker (txttache.value)   ;
+   todoarray.push(txttache.value);
+    localStorage.setItem('todo',JSON.stringify(todoarray));
+ txttache.value="";})
+// creation du fonction todomarker
+ function todomarker (txt)
+ {
+    var li = document.createElement("li");
+    li.textContent =txt ; 
+    mestaches.appendChild(li);
+    
+ }
+
+
+
+ // ajjouter un event sur le button delete 
+ btndelete.addEventListener("click",function(){
+ while (mestaches.firstChild){
+    mestaches.removeChild(mestaches.firstChild); 
+    localStorage.clear();}})
+
+// ajouter un evenment sur le button ajouter 
+btnadd.addEventListener("click",function(){
+var txt = txttache.value ; 
+todomarker(txt);
+txttache.value='' ; 
+
+})
+
+
+ // ajouter une loop pour ecrire les taches ecrits dans le todo  storage 
+ for (i=0 ; i<stored.length; i++)
+{
+
+ todomarker(stored[i]);
+
+}
+
+
+
+        </script>
+</body>
+</html>
